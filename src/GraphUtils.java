@@ -89,22 +89,22 @@ public class GraphUtils {
 		if(null == values || values.isEmpty())
 			return false;
 
-		Node startNode = g.getNode(values.get(0));
-		BreadthFirstSearch breadthFirstSearch = new BreadthFirstSearch(g);
-		breadthFirstSearch.bfs(values.get(values.size() - 1), startNode);
+		boolean flag = false;
+		int visited = 0;
+		for (int i = 1; i < values.size() - 1; i++) {
+			Node childNode = g.getNode(values.get(i));
+			Node childNextNode = g.getNode(values.get(i+1));
+			Set<Node> neighbours = g.getNodeNeighbors(childNode);
+			if(neighbours.contains(childNextNode))
+				flag = true;
+			else return false;
+			visited++;
+		}
+
 		values.remove(0);
 		values.remove(values.size() - 1);
 
-		if(breadthFirstSearch.marked.size() == values.size()){
-			int count = 0;
-			Iterator<Node> iterator = breadthFirstSearch.marked.iterator();
-			while (iterator.hasNext()){
-				Node childNode = iterator.next();
-				values.remove(childNode.getElement());
-			}
-		}
-		
-		return values.isEmpty(); // this line is here only so this code will compile if you don't modify it
+		return flag && visited + 1 == g.adjacencySets.size();
 	}
 	
 }
