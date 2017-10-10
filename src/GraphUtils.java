@@ -39,7 +39,7 @@ public class GraphUtils {
 		boolean bfsFound = breadthFirstSearch.bfs(startNode, dest);
 
 		if(bfsFound){
-			return breadthFirstSearch.marked.size() / 2;
+			return breadthFirstSearch.marked.size() / 2 == 1 ? breadthFirstSearch.marked.size() - 1 : breadthFirstSearch.marked.size() / 2;
 		}
 		else
 			return -1;
@@ -62,21 +62,16 @@ public class GraphUtils {
 		if(!graph.containsNode(srcNode))
 			return null;
 
-		Node rootNode = graph.getStartingNode();
-		int minedges = minDistance(graph, rootNode.getElement(), src);
-		if(distance <= minedges)
-		{
-			BreadthFirstSearch breadthFirstSearch = new BreadthFirstSearch(graph);
-			breadthFirstSearch.bfs(rootNode, src);
-			Iterator<Node> iterator = breadthFirstSearch.marked.iterator();
-			while (iterator.hasNext()){
-				Node childNode = iterator.next();
-				if(!childNode.getElement().equalsIgnoreCase(src))
-					nodeSetWithMinDist.add(childNode.getElement());
+		Set<Node> allNodeSet = graph.getAllNodes();
+		Iterator<Node> iterator = allNodeSet.iterator();
+		while (iterator.hasNext()){
+			Node currNode = iterator.next();
+			int minedges = minDistance(graph, src, currNode.getElement());
+			if(minedges > 0 && minedges <= distance) {
+				if (!currNode.getElement().equalsIgnoreCase(src))
+					nodeSetWithMinDist.add(currNode.getElement());
 			}
 		}
-
-		
 		return nodeSetWithMinDist; // this line is here only so this code will compile if you don't modify it
 	}
 

@@ -47,22 +47,4 @@ public class BreadthFirstSearch {
 		}
 		return false;
 	}
-
-	public void bfsHamiltonian(Node start, String source) {
-
-		Queue<Node> toExplore = new LinkedList<Node>();
-		marked.add(start);
-		toExplore.add(start);
-		while (!toExplore.isEmpty()) {
-			Node current = toExplore.remove();
-			for (Node neighbor : graph.getNodeNeighbors(current)) {
-				if (!marked.contains(neighbor) && !neighbor.equals(graph.getNode(source))) {
-					marked.add(neighbor);
-					toExplore.add(neighbor);
-				}
-			}
-		}
-	}
-	
-
 }
